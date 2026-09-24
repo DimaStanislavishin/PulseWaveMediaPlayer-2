@@ -1,0 +1,180 @@
+/* Phone-only bottom navigation and compact now-playing player.
+ * This file is intended to be loaded after index.css.
+ */
+
+@media (max-width: 600px) {
+  :root {
+    --phone-nav-height: 72px;
+    --phone-player-height: 74px;
+  }
+
+  body {
+    padding-bottom: calc(var(--phone-nav-height) + var(--phone-player-height) + env(safe-area-inset-bottom));
+  }
+
+  /* Phone navigation at the bottom. */
+  #mobile-top-nav {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: calc(var(--phone-nav-height) + env(safe-area-inset-bottom)) !important;
+    padding: 6px 10px env(safe-area-inset-bottom) !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    background: rgba(20, 19, 20, .96) !important;
+    border-top: 1px solid rgba(255,255,255,.08) !important;
+    border-bottom: 0 !important;
+    z-index: 1200 !important;
+  }
+
+  #mobile-top-nav .mobile-nav {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    gap: 4px !important;
+    overflow: visible !important;
+  }
+
+  /* Icons only: hide labels under the buttons on phones. */
+  #mobile-top-nav .mobile-nav-btn {
+    min-width: 0 !important;
+    min-height: 56px !important;
+    flex: 1 1 0 !important;
+    padding: 5px 4px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    color: var(--text-muted) !important;
+    background: transparent !important;
+    border-radius: 10px !important;
+    font-size: 0 !important;
+  }
+
+  #mobile-top-nav .mobile-nav-btn.active {
+    color: #fff !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #mobile-top-nav .mobile-nav-btn .material-symbols-outlined {
+    font-size: 30px !important;
+    line-height: 1 !important;
+  }
+
+  #mobile-top-nav .mobile-nav-text {
+    display: none !important;
+  }
+
+  /* Player sits immediately above the bottom navigation. */
+  footer.player-bar {
+    bottom: calc(var(--phone-nav-height) + env(safe-area-inset-bottom)) !important;
+    height: var(--phone-player-height) !important;
+    min-height: var(--phone-player-height) !important;
+    padding: 7px 12px 9px !important;
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) auto !important;
+    grid-template-rows: 1fr 8px !important;
+    column-gap: 10px !important;
+    row-gap: 5px !important;
+    border-radius: 0 !important;
+    border-top: 1px solid rgba(255,255,255,.1) !important;
+    background: rgba(27, 26, 28, .98) !important;
+  }
+
+  footer.player-bar .player-song-info {
+    grid-column: 1 / 3 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+
+  footer.player-bar .player-cover {
+    width: 42px !important;
+    height: 42px !important;
+    margin-right: 8px !important;
+    border-radius: 6px !important;
+  }
+
+  footer.player-bar .player-text {
+    display: block !important;
+    min-width: 0 !important;
+  }
+
+  footer.player-bar .player-title,
+  footer.player-bar .player-artist {
+    max-width: 40vw !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  footer.player-bar .player-title { font-size: 12px !important; }
+  footer.player-bar .player-artist { font-size: 11px !important; }
+
+  footer.player-bar .player-controls {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    display: block !important;
+  }
+
+  footer.player-bar .control-buttons {
+    gap: 0 !important;
+    justify-content: flex-end !important;
+  }
+
+  footer.player-bar .control-buttons .control-btn:not(.btn-play) {
+    display: none !important;
+  }
+
+  /* Slightly smaller play/pause button. */
+  footer.player-bar .control-btn.btn-play {
+    display: inline-flex !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  footer.player-bar .control-btn.btn-play .material-symbols-outlined {
+    font-size: 23px !important;
+  }
+
+  /* Larger and easier-to-use progress bar. */
+  footer.player-bar .progress-container {
+    display: block !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 8px !important;
+  }
+
+  footer.player-bar .progress-container .time-label { display: none !important; }
+  footer.player-bar .progress-container .slider {
+    display: block !important;
+    width: 100% !important;
+    height: 8px !important;
+    background: rgba(255,255,255,.28) !important;
+    border-radius: 8px !important;
+  }
+
+  footer.player-bar .progress-container .slider::-webkit-slider-thumb {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  footer.player-bar .player-actions { display: none !important; }
+  main { padding-top: 72px !important; padding-bottom: 12px !important; }
+}
+
+@media (min-width: 601px) {
+  #mobile-top-nav { display: none !important; }
+}

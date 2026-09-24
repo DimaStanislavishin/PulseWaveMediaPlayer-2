@@ -1,0 +1,2006 @@
+/* RESPONSIVE STYLES: Mobile & Tablet optimizations */
+
+:root {
+  --bg-color: #131314;
+  /* Основний темний фон */
+  --surface-color: #201f20;
+  /* Фон карток та панелей */
+  --surface-hover: #2a2a2b;
+  /* Колір при наведенні на елементи */
+  --primary-color: #6b21ff;
+  /* Фіолетовий акцентний колір */
+  --primary-light: #cebdff;
+  /* Світло-фіолетовий */
+  --text-main: #e5e2e3;
+  /* Основний текст */
+  --text-muted: #cbc3da;
+  /* Другорядний (сірий) text */
+  --sidebar-width: 260px;
+  /* Ширина бічної панелі */
+  --player-height: 96px;
+  /* Висота плеєра */
+}
+
+
+
+/* Загальні налаштування сторінки */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Geist', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  /* Прибирає синє виділення на телефонах */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  overflow-x: hidden;
+  padding-bottom: var(--player-height);
+  /* Залишаємо місце внизу під плеєр */
+}
+
+/* Скроллбар (смуга прокручування) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-color);
+  border-radius: 4px;
+}
+
+/* Ліва бічна панель (десктоп) */
+aside {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background-color: var(--surface-color);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 100;
+}
+
+.brand {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand span {
+  color: var(--primary-color);
+  font-size: 32px;
+}
+
+/* Навігаційне меню */
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-btn:hover {
+  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-btn.active {
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary-color), #854dff);
+  box-shadow: 0 4px 15px rgba(107, 33, 255, 0.3);
+}
+
+/* Головна контентна область */
+main {
+  margin-left: var(--sidebar-width);
+  padding: 32px;
+  min-height: 100vh;
+}
+
+/* Сторінки (View switcher) */
+.view {
+  display: none;
+  /* За замовчуванням приховуємо всі сторінки */
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.view.active {
+  display: block;
+  /* Показуємо лише активну */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+           3. КОМПОНЕНТИ (Картки, Рядки, Пошук)
+           ========================================================================== */
+
+/* Заголовки сторінок */
+h2.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+/* Пошуковий рядок */
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin-bottom: 32px;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 14px 14px 14px 46px;
+  background-color: var(--surface-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  color: var(--text-main);
+  font-size: 16px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.search-container input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 10px rgba(107, 33, 255, 0.2);
+}
+
+.search-container span {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+/* Банер на головній */
+.hero-banner {
+  background: linear-gradient(135deg, #1d0f3a 0%, #0c051a 100%);
+  border: 1px solid rgba(107, 33, 255, 0.2);
+  border-radius: 16px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  z-index: 2;
+  max-width: 60%;
+}
+
+.hero-tag {
+  background: var(--primary-color);
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #fff, var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.btn-play-hero {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s;
+}
+
+.btn-play-hero:hover {
+  transform: scale(1.04);
+}
+
+.hero-img {
+  width: 220px;
+  height: 220px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+/* Системна сітка карток (Grid) */
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* Окрема картка (Плейлист / Категорія) */
+.card {
+  background-color: var(--surface-color);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.card:hover {
+  background-color: var(--surface-hover);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  /* Робить картинку квадратною */
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Кнопка швидкого запуску на картці */
+.card-play-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover .card-play-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-play-btn:hover {
+  transform: scale(1.08);
+  background-color: #7b38ff;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Ховає довгий текст за "..." */
+}
+
+.card-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Список пісень (Рядки) */
+.song-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.song-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.song-row:hover {
+  background-color: var(--surface-hover);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.song-num {
+  width: 32px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.song-cover {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+.song-info {
+  flex-grow: 1;
+  /* Займає весь доступний простір по ширині */
+  min-width: 0;
+  /* Потрібно для правильної роботи text-overflow */
+}
+
+.song-title {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-artist {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-album {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-right: 24px;
+  display: block;
+  width: 150px;
+}
+
+.song-duration {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-right: 16px;
+}
+
+.song-action-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.song-action-btn:hover {
+  color: var(--primary-light);
+}
+
+/* Вкладки для фільтрації в бібліотеці */
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 12px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ==========================================================================
+           4. НИЖНІЙ МУЗИЧНИЙ ПЛЕЄР (Player Bar)
+           ========================================================================== */
+footer.player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--player-height);
+  background-color: rgba(20, 19, 20, 0.85);
+  backdrop-filter: blur(20px);
+  /* Ефект розмиття заднього фону */
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 999;
+}
+
+/* Ліва частина: Інформація про поточну пісню */
+.player-song-info {
+  display: flex;
+  align-items: center;
+  width: 30%;
+  min-width: 180px;
+}
+
+.player-cover {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.player-text {
+  min-width: 0;
+}
+
+.player-title {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-artist {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Середня частина: Кнопки управління та прогрес-бар */
+.player-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 40%;
+}
+
+.control-buttons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, transform 0.1s;
+}
+
+.control-btn:hover {
+  color: var(--text-main);
+}
+
+.control-btn.btn-play {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--text-main);
+  color: #000;
+}
+
+.control-btn.btn-play:hover {
+  transform: scale(1.05);
+}
+
+/* Смуга прогресу пісні */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.time-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  width: 32px;
+  text-align: center;
+}
+
+/* Горизонтальний слайдер (input type="range") */
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.slider:hover::-webkit-slider-thumb {
+  transform: scale(1.3);
+  background: #fff;
+}
+
+/* Права частина: Гучність та розширення */
+.player-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 30%;
+  justify-content: flex-end;
+}
+
+.volume-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 120px;
+}
+
+
+
+@media (max-width: 1000px) {
+  :root { --sidebar-width: 72px; --player-height: 88px; }
+
+  aside {
+    width: var(--sidebar-width);
+    padding: 16px;
+  }
+
+  .brand {
+    font-size: 18px;
+    gap: 8px;
+  }
+
+  main {
+    margin-left: var(--sidebar-width);
+    padding: 20px;
+  }
+
+  .hero-banner {
+    padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .hero-content { max-width: 100%; }
+  .hero-title { font-size: 28px; }
+  .hero-desc { font-size: 14px; }
+  .hero-img { width: 180px; height: 180px; }
+
+  .grid-layout { gap: 18px; }
+
+  .card:hover { transform: none; }
+  .card-play-btn { opacity: 1; transform: translateY(0); }
+
+  .player-bar { height: var(--player-height); padding: 0 16px; }
+  .player-cover { width: 48px; height: 48px; }
+  .player-song-info { min-width: 140px; width: 36%; }
+  .player-controls { width: 40%; }
+  .player-actions { width: 24%; }
+
+  .search-container { max-width: 100%; }
+}
+
+@media (max-width: 600px) {
+  :root { --sidebar-width: 64px; --player-height: 76px; }
+
+  /* Collapse sidebar to compact icon bar */
+  aside {
+    width: var(--sidebar-width);
+    padding: 12px;
+  }
+
+  .brand { display: none; }
+
+  nav { gap: 6px; }
+  .nav-btn { padding: 10px; justify-content: center; text-align: center; }
+  .nav-btn span { font-size: 28px; }
+  .nav-btn { font-size: 12px; }
+  .nav-btn .material-symbols-outlined { display: block; }
+  .nav-btn { white-space: nowrap; }
+
+  main {
+    margin-left: var(--sidebar-width);
+    padding: 16px;
+  }
+
+  .hero-banner {
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-title { font-size: 20px; }
+  .hero-desc { font-size: 13px; }
+  .hero-img { width: 120px; height: 120px; }
+
+  .grid-layout { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+
+  /* Song list compact */
+  .song-row { padding: 10px; gap: 8px; }
+  .song-cover { width: 44px; height: 44px; margin-right: 12px; }
+  .song-album { display: none; }
+  .song-duration { margin-right: 8px; }
+
+  /* Player compact layout */
+  footer.player-bar {
+    height: var(--player-height);
+    padding: 0 12px;
+  }
+
+  .player-text { display: none; }
+  .player-cover { width: 44px; height: 44px; }
+  .player-song-info { min-width: 0; width: auto; }
+  .progress-container { display: none; }
+  .player-actions { gap: 8px; }
+
+  /* Make touch targets bigger */
+  .control-btn, .card-play-btn, .song-action-btn, .nav-btn { min-height: 44px; min-width: 44px; }
+
+  /* Always show play button on cards on touch devices */
+  .card-play-btn { opacity: 1; transform: translateY(0); }
+
+  /* Reduce heavy shadows/animations on mobile */
+  .card:hover { box-shadow: none; }
+
+  /* Hide some non-essential decorative text */
+  h2.section-title { font-size: 20px; }
+}
+
+
+/* When on phone/tablet: hide left sidebar and use top mobile nav instead */
+@media (max-width: 1000px) {
+  /* hide left sidebar */
+  aside { display: none !important; }
+
+  /* Make main content full width and leave space for top nav */
+  main { margin-left: 0 !important; padding-top: 72px !important; }
+
+  /* Show mobile top nav across full width */
+  #mobile-top-nav { left: 0 !important; right: 0; display: flex !important; }
+
+  /* Ensure hero and grid don't get hidden behind top nav */
+  .hero-banner { margin-top: 0; }
+}
+
+/* For medium devices (tablet) keep mobile nav visible but show short texts */
+@media (max-width: 900px) and (min-width: 601px) {
+  .mobile-nav-text { display: inline-block; }
+}
+
+/* Small tweak: if top nav is visible, increase its z so it sits above content */
+#mobile-top-nav { z-index: 1100; }
+
+
+/* Force mobile top nav to be horizontal, left-aligned and non-wrapping */
+#mobile-top-nav {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 56px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 6px 10px !important;
+  background: var(--surface-color) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.03) !important;
+  z-index: 1200 !important;
+  overflow: hidden;
+}
+
+/* The inner container should be a single horizontal row with horizontal scroll if needed */
+#mobile-top-nav .mobile-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-left: 6px !important;
+}
+
+/* Buttons inline, prevent them from becoming column */
+#mobile-top-nav .mobile-nav-btn {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+  padding: 8px 10px !important;
+  min-height: 44px !important;
+  border-radius: 10px !important;
+  color: var(--text-muted) !important;
+  background: none !important;
+  max-width: 160px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Icons and text inline */
+#mobile-top-nav .mobile-nav-btn .material-symbols-outlined {
+  font-size: 20px !important;
+  line-height: 1 !important;
+}
+#mobile-top-nav .mobile-nav-text {
+  display: inline-block !important;
+  max-width: 96px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Hide text on very small screens, keep icons */
+@media (max-width: 420px) {
+  #mobile-top-nav .mobile-nav-text { display: none !important; }
+  #mobile-top-nav { height: 52px !important; padding: 6px 6px !important; }
+  #mobile-top-nav .mobile-nav-btn { padding: 8px !important; }
+}
+
+/* Ensure content is not hidden behind top nav */
+@media (max-width: 1000px) {
+  main { margin-left: 0 !important; padding-top: 72px !important; }
+}
+
+/* Скрывать мобильную верхнюю панель на десктопе и вернуть боковую панель */
+@media (min-width: 1001px) {
+  /* Скрываем мобильный top nav, даже если он установлен inline-стилем */
+  #mobile-top-nav {
+    display: none !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+  }
+
+  /* Восстанавливаем отступы для main (чтобы бренд/контент не были подложены) */
+  main {
+    margin-left: var(--sidebar-width) !important;
+    padding-top: 0 !important;
+  }
+}
+
+/* === Mobile player: horizontal evenly-spaced controls (phones) === */
+@media (max-width: 600px) {
+  /* make footer a 3-column grid: left (cover), center (controls), right (actions) */
+  footer.player-bar {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px !important;
+    height: 76px !important;
+  }
+
+  /* left: cover (keep small) */
+  .player-song-info {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .player-cover {
+    width: 48px !important;
+    height: 48px !important;
+    margin-right: 8px !important;
+  }
+  /* hide track text on very small screens to save space */
+  .player-text { display: none !important; }
+
+  /* center: main controls (prev / play / next) */
+  .player-controls {
+    grid-column: 2;
+    justify-self: center;
+    width: auto !important;
+    padding: 0 !important;
+  }
+
+  /* arrange control buttons horizontally and evenly */
+  .control-buttons {
+    display: flex !important;
+    gap: 18px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* make touch targets equal size and comfortable */
+  .control-btn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* larger circular play button in center */
+  .control-btn.btn-play {
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 50% !important;
+  }
+
+  /* hide long progress bar on mobile (optional) */
+  .progress-container { display: none !important; }
+
+  /* right: actions (queue, list, volume) */
+  .player-actions {
+    grid-column: 3;
+    justify-self: end;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  /* volume controls: horizontal small slider like desktop */
+  .volume-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: auto !important;
+  }
+  .volume-controls .material-symbols-outlined { font-size: 18px !important; }
+
+  /* force horizontal slider and size it appropriately */
+  .volume-controls input[type="range"] {
+    width: 64px !important;
+    height: 4px !important;
+    -webkit-appearance: none !important;
+    transform: none !important; /* prevent any accidental rotation */
+  }
+  .volume-controls input[type="range"]::-webkit-slider-thumb {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  /* small polish: ensure icons/text don't wrap */
+  #mobile-top-nav, #mobile-top-nav .mobile-nav-btn { white-space: nowrap !important; }
+}
+
+/* Force show and style horizontal volume slider on mobile */
+@media (max-width: 600px) {
+  /* убедимся, что правый блок видим */
+  footer.player-bar .player-actions { display: flex !important; visibility: visible !important; }
+
+  /* volume container must be horizontal and visible */
+  .volume-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: auto !important;
+    min-width: 64px !important;
+    padding-left: 4px !important;
+  }
+
+  /* make sure the input (slider) is horizontal and visible */
+  .volume-controls input[type="range"],
+  .volume-controls .slider {
+    display: block !important;
+    width: 72px !important;     /* ширина ползунка */
+    height: 4px !important;
+    -webkit-appearance: none !important;
+    transform: none !important;
+    margin: 0 !important;
+    background: rgba(255,255,255,0.12) !important;
+    border-radius: 4px !important;
+  }
+
+  .volume-controls input[type="range"]::-webkit-slider-thumb,
+  .volume-controls .slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: var(--primary-light) !important;
+  }
+
+  /* если какой-то rule поворачивает ползунок — отменяем */
+  .volume-controls input[type="range"], .volume-controls .slider { transform: none !important; writing-mode: horizontal-tb !important; }
+
+  /* гарантия, что иконки справа остаются видимыми и не перекрывают ползунок */
+  .player-actions { gap: 10px !important; align-items: center !important; }
+}
+
+/* Mobile player: tighter spacing and visible horizontal volume slider */
+@media (max-width: 600px) {
+  footer.player-bar {
+    /* чуть компактнее и поменьше отступы */
+    padding: 0 8px !important;
+    height: 72px !important;
+    border-radius: 12px;
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .player-song-info {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .player-cover {
+    width: 44px !important;
+    height: 44px !important;
+    margin-right: 6px !important;
+  }
+
+  .player-text { display: none !important; } /* скрываем текст чтобы не давил */
+
+  .player-controls {
+    grid-column: 2;
+    justify-self: center;
+    width: auto !important;
+    padding: 0 !important;
+  }
+
+  /* Существенно уменьшаем gap между кнопками */
+  .control-buttons {
+    display: flex !important;
+    gap: 12px !important; /* было 18/20, уменьшаем */
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .control-btn {
+    min-width: 40px !important;
+    min-height: 40px !important;
+    padding: 6px !important;
+  }
+
+  .control-btn.btn-play {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .player-actions {
+    grid-column: 3;
+    justify-self: end;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important; /* уменьшили */
+  }
+
+  /* Volume: всегда горизонтальный, компактный */
+  .volume-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: auto !important;
+    min-width: 48px !important;
+    padding-left: 4px !important;
+  }
+
+  .volume-controls .material-symbols-outlined { font-size: 18px !important; }
+
+  .volume-controls input[type="range"],
+  .volume-controls .slider {
+    display: block !important;
+    width: 64px !important;
+    height: 4px !important;
+    -webkit-appearance: none !important;
+    transform: none !important;
+    margin: 0 !important;
+    background: rgba(255,255,255,0.08) !important;
+    border-radius: 4px !important;
+  }
+
+  .volume-controls input[type="range"]::-webkit-slider-thumb,
+  .volume-controls .slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    background: var(--primary-light) !important;
+  }
+
+  /* если заголовок все еще виден под навбаром */
+  main { padding-bottom: calc(var(--player-height) + 8px); }
+}
+
+/* Volume popup (vertical) — appears above the volume button */
+.volume-popup {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: rgba(20,20,20,0.95);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  z-index: 1400;
+  width: 56px;
+  height: 140px;
+  touch-action: none;
+  user-select: none;
+}
+
+/* small arrow under the popup pointing to button */
+.volume-popup::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgba(20,20,20,0.95);
+}
+
+/* the rotated native range (we invert value in JS so up => louder) */
+.volume-popup .volume-vertical {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 120px; /* visual length (rotated) */
+  height: 28px;
+  transform: rotate(-90deg);
+  outline: none;
+  background: transparent;
+}
+
+/* track */
+.volume-popup .volume-vertical::-webkit-slider-runnable-track {
+  height: 4px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 4px;
+}
+.volume-popup .volume-vertical::-moz-range-track {
+  height: 4px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 4px;
+}
+
+/* thumb */
+.volume-popup .volume-vertical::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  margin-top: -4px;
+}
+.volume-popup .volume-vertical::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* keep popup small on very small screens */
+@media (max-width:420px) {
+  .volume-popup { width: 48px; height: 120px; }
+  .volume-popup .volume-vertical { width: 100px; }
+}
+
+/* Compact horizontal volume + tighter player layout for phones */
+@media (max-width: 600px) {
+  /* компактный футер в 3 колонки */
+  footer.player-bar {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px !important;
+    height: 72px !important;
+  }
+
+  /* обложка слева (сокращаем) */
+  .player-song-info {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .player-cover {
+    width: 44px !important;
+    height: 44px !important;
+  }
+  .player-text { display: none !important; } /* прячем текст, экономим место */
+
+  /* середина: основные кнопки */
+  .player-controls { grid-column: 2; justify-self: center; width: auto !important; padding: 0 !important; }
+  .control-buttons {
+    display: flex !important;
+    gap: 10px !important;   /* меньше расстояния между кнопками */
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .control-btn {
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 6px !important;
+  }
+  .control-btn.btn-play {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  /* правая колонка: действия + громкость */
+  .player-actions {
+    grid-column: 3;
+    justify-self: end;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  /* Компактный горизонтальный ползунок громкости */
+  .volume-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: auto !important;
+    padding-left: 4px !important;
+  }
+
+  /* видимый, но узкий слайдер */
+  .volume-controls .slider,
+  .volume-controls input[type="range"] {
+    display: block !important;
+    width: 56px !important;   /* можно уменьшить до 48px, если нужно */
+    height: 4px !important;
+    -webkit-appearance: none !important;
+    background: rgba(255,255,255,0.08) !important;
+    border-radius: 4px !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  .volume-controls .slider::-webkit-slider-thumb,
+  .volume-controls input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    background: var(--primary-light) !important;
+  }
+
+  /* прячем прогресс-бар, чтобы место было только под основные элементы */
+  .progress-container { display: none !important; }
+
+  /* небольшая дополнительная гарантия: не даём элементам переноситься */
+  footer.player-bar *, #mobile-top-nav, #mobile-top-nav .mobile-nav-btn { white-space: nowrap !important; }
+}
+
+/* Compact player: progressively tighten spacing on very small screens */
+
+/* Base mobile (<=600px) already set earlier. Below — дополнительные сжатия */
+@media (max-width: 420px) {
+  footer.player-bar {
+    padding: 6px 6px !important;
+    height: 68px !important;
+    grid-template-columns: auto 1fr auto;
+    gap: 6px !important;
+  }
+
+  .control-buttons { gap: 10px !important; }
+  .control-btn { min-width: 34px !important; min-height: 34px !important; }
+  .control-btn.btn-play { width: 46px !important; height: 46px !important; }
+
+  .player-cover { width: 40px !important; height: 40px !important; }
+  .player-text { display: none !important; }
+
+  .player-actions { gap: 6px !important; }
+
+  .volume-controls { gap: 6px !important; }
+  .volume-controls .slider,
+  .volume-controls input[type="range"] {
+    width: 52px !important;
+  }
+}
+
+/* Even tighter for narrow phones (approx. iPhone X width ~375px) */
+@media (max-width: 390px) {
+  footer.player-bar { padding: 5px 6px !important; height: 64px !important; gap: 4px !important; }
+  .control-buttons { gap: 8px !important; }
+  .control-btn { min-width: 32px !important; min-height: 32px !important; padding: 4px !important; }
+  .control-btn.btn-play { width: 44px !important; height: 44px !important; }
+
+  .player-cover { width: 36px !important; height: 36px !important; }
+  .volume-controls .slider,
+  .volume-controls input[type="range"] { width: 48px !important; }
+}
+
+/* Very narrow (older phones) */
+@media (max-width: 360px) {
+  footer.player-bar { padding: 4px 6px !important; height: 60px !important; gap: 3px !important; }
+  .control-buttons { gap: 6px !important; }
+  .control-btn { min-width: 30px !important; min-height: 30px !important; }
+  .control-btn.btn-play { width: 40px !important; height: 40px !important; }
+
+  .player-cover { width: 32px !important; height: 32px !important; }
+  .volume-controls .slider,
+  .volume-controls input[type="range"] { width: 44px !important; }
+
+  /* Make sure slider is visible and tappable */
+  .volume-controls input[type="range"] { display:block !important; opacity: 1 !important; pointer-events: auto !important; }
+}
+
+/* Safety: keep elements on one line, and ensure slider not hidden */
+@media (max-width: 420px) {
+  footer.player-bar *, .player-actions, .control-buttons, .volume-controls { white-space: nowrap !important; }
+  .volume-controls { align-items: center !important; }
+  .volume-controls input[type="range"], .volume-controls .slider { -webkit-appearance: none !important; transform: none !important; }
+  footer.player-bar { z-index: 999; }
+}
+
+/* ----- Ensure player fits on iPhone X / safe-area ----- */
+
+/* Use safe-area insets for padding so controls are not hidden behind rounded corners */
+footer.player-bar {
+  padding-left: calc(8px + env(safe-area-inset-left)) !important;
+  padding-right: calc(8px + env(safe-area-inset-right)) !important;
+  overflow: visible !important; /* allow popups / sliders to be visible */
+  box-sizing: border-box;
+}
+
+/* Right column may need extra right padding so slider isn't clipped */
+.player-actions {
+  padding-right: env(safe-area-inset-right, 8px) !important;
+  overflow: visible !important;
+}
+
+/* Default mobile compact slider (guarantee visible) */
+@media (max-width: 420px) {
+  .volume-controls .slider,
+  .volume-controls input[type="range"] {
+    display: block !important;
+    width: 48px !important;      /* small but tappable */
+    height: 4px !important;
+    margin-right: 2px !important;
+    margin-left: 2px !important;
+    -webkit-appearance: none !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+  }
+
+  /* make sure the volume icon and controls don't push slider off-screen */
+  .player-actions { gap: 6px !important; }
+  .control-buttons { gap: 8px !important; }
+  .control-btn { min-width: 30px !important; min-height: 30px !important; }
+  .control-btn.btn-play { width: 40px !important; height: 40px !important; }
+}
+
+/* Even tighter for narrow screens (iPhone X ~ 375px width) */
+@media (max-width: 390px) {
+  .volume-controls .slider,
+  .volume-controls input[type="range"] { width: 44px !important; }
+  .player-cover { width: 36px !important; height: 36px !important; }
+  .control-btn.btn-play { width: 44px !important; height: 44px !important; }
+  footer.player-bar { padding-left: calc(6px + env(safe-area-inset-left)); padding-right: calc(6px + env(safe-area-inset-right)); }
+}
+
+/* Fallback: ensure nothing hides due to border-radius */
+footer.player-bar, .player-actions, .volume-controls { z-index: 9999; }
+
+/* Optional: if the slider sits inside a rounded container that clips it, remove clip */
+footer.player-bar * { overflow: visible !important; }
+
+/* Tighten footer after removing volume control */
+@media (max-width: 600px) {
+  footer.player-bar {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px !important;
+    height: 72px !important;
+  }
+
+  .player-song-info { grid-column: 1; min-width: 0; gap: 8px; }
+  .player-text { display: none !important; } /* экономим место */
+
+  .player-controls { grid-column: 2; justify-self: center; }
+  .control-buttons { gap: 10px !important; }
+
+  .player-actions { grid-column: 3; justify-self: end; display:flex; gap: 8px !important; align-items:center; padding-right: calc(8px + env(safe-area-inset-right)); }
+}
+
+/* ==========================================================================
+           5. ВІКНО ТЕКСТУ ПІСНІ (Lyrics)
+           ========================================================================== */
+
+/* Кнопка у плеєрі, поки вікно відкрите (той самий рожевий, що й у shuffle / repeat) */
+#lyrics-btn.active {
+  color: #ff6b9d;
+}
+
+#lyrics-btn.active .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1;
+}
+
+#lyrics-btn:focus-visible,
+.lyrics-close:focus-visible,
+.lyrics-retry:focus-visible {
+  outline: 2px solid var(--primary-light);
+  outline-offset: 2px;
+}
+
+/* Затемнений фон. Знизу залишаємо місце, щоб плеєр лишався доступним */
+.lyrics-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 24px calc(var(--player-height) + 24px);
+  background: rgba(19, 19, 20, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /* При закритті приховуємо (visibility) лише після зникнення, щоб анімація була плавною */
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.lyrics-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  /* При відкритті елемент має стати видимим одразу, інакше на нього не можна перевести фокус */
+  transition: opacity 0.25s ease, visibility 0s;
+}
+
+/* Саме вікно: той самий градієнт і рамка, що й у hero-banner */
+.lyrics-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 760px;
+  height: 100%;
+  max-height: 720px;
+  background: linear-gradient(135deg, #1d0f3a 0%, #0c051a 100%);
+  border: 1px solid rgba(107, 33, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  transform: translateY(16px);
+  transition: transform 0.25s ease;
+}
+
+.lyrics-overlay.open .lyrics-window {
+  transform: translateY(0);
+}
+
+/* Розмита обкладинка поточного треку як м'яке світіння фону */
+.lyrics-window::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  right: -40px;
+  bottom: -40px;
+  background-image: var(--lyrics-cover);
+  background-size: cover;
+  background-position: center;
+  filter: blur(48px) saturate(1.4);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Затемнення поверх обкладинки, щоб текст завжди добре читався */
+.lyrics-window::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(12, 5, 26, 0.6), rgba(12, 5, 26, 0.92));
+  pointer-events: none;
+}
+
+.lyrics-header,
+.lyrics-body,
+.lyrics-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Шапка вікна */
+.lyrics-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lyrics-cover {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.lyrics-cover[hidden],
+.lyrics-badge[hidden] {
+  display: none;
+}
+
+.lyrics-meta {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.lyrics-title {
+  font-size: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lyrics-artist {
+  font-size: 14px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lyrics-badge {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.lyrics-badge.is-plain {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+}
+
+.lyrics-close {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.lyrics-close:hover {
+  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Область з текстом (прокручується). Краї плавно розчиняються */
+.lyrics-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 32px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+}
+
+.lyrics-lines {
+  flex-shrink: 0;
+}
+
+/* Порожній простір зверху й знизу, щоб перший та останній рядки могли стати по центру */
+.lyrics-lines.is-synced::before,
+.lyrics-lines.is-synced::after {
+  content: '';
+  display: block;
+  height: 35vh;
+}
+
+.lyrics-lines.is-plain {
+  padding: 56px 0;
+}
+
+.lyrics-line {
+  padding: 10px 0;
+  color: var(--text-muted);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.3;
+  opacity: 0.65;
+  overflow-wrap: anywhere;
+  transform-origin: left center;
+  transition: opacity 0.3s ease, color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.lyrics-lines.is-synced .lyrics-line {
+  cursor: pointer;
+}
+
+.lyrics-lines.is-synced .lyrics-line:not(.is-active):hover {
+  color: var(--text-main);
+  opacity: 0.9;
+}
+
+.lyrics-line.is-gap {
+  font-size: 24px;
+}
+
+.lyrics-line.is-past {
+  opacity: 0.45;
+}
+
+/* Рядок, який виконується зараз */
+.lyrics-line.is-active {
+  color: #fff;
+  opacity: 1;
+  transform: scale(1.03);
+  text-shadow: 0 0 28px rgba(107, 33, 255, 0.75);
+}
+
+/* Текст без часових міток: спокійне читання без підсвічування */
+.lyrics-lines.is-plain .lyrics-line {
+  padding: 3px 0;
+  color: var(--text-main);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.lyrics-lines.is-plain .lyrics-line.is-blank {
+  height: 22px;
+  padding: 0;
+}
+
+/* Стани: завантаження, помилка, порожньо */
+.lyrics-status {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.lyrics-status .material-symbols-outlined {
+  margin-bottom: 8px;
+  font-size: 48px;
+  color: var(--primary-light);
+  opacity: 0.8;
+}
+
+.lyrics-status-title {
+  color: var(--text-main);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.lyrics-status-text {
+  max-width: 340px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.lyrics-spinner {
+  animation: lyricsSpin 1s linear infinite;
+}
+
+@keyframes lyricsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.lyrics-retry {
+  margin-top: 16px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 50px;
+  background-color: #fff;
+  color: #000;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.lyrics-retry:hover {
+  transform: scale(1.04);
+}
+
+/* Нижній рядок: підказка та джерело текстів */
+.lyrics-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.lyrics-footer a {
+  color: var(--primary-light);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.lyrics-footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Телефони: вікно на всю ширину */
+@media (max-width: 600px) {
+  .lyrics-overlay {
+    padding: 0 0 var(--player-height);
+  }
+
+  .lyrics-window {
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .lyrics-header {
+    padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 14px;
+    gap: 12px;
+  }
+
+  .lyrics-cover {
+    width: 44px;
+    height: 44px;
+  }
+
+  .lyrics-title {
+    font-size: 16px;
+  }
+
+  .lyrics-body {
+    padding: 0 20px;
+  }
+
+  .lyrics-line {
+    font-size: 22px;
+  }
+
+  .lyrics-line.is-gap {
+    font-size: 20px;
+  }
+
+  .lyrics-lines.is-plain .lyrics-line {
+    font-size: 17px;
+  }
+
+  .lyrics-footer {
+    padding: 10px 16px;
+  }
+}
+
+/* Повага до налаштування "зменшити рухи" */
+@media (prefers-reduced-motion: reduce) {
+  .lyrics-overlay,
+  .lyrics-overlay.open,
+  .lyrics-window,
+  .lyrics-line {
+    transition: none;
+  }
+
+  .lyrics-spinner {
+    animation: none;
+  }
+}
+
+/* Phone-only bottom navigation and compact now-playing player. */
+
+@media (max-width: 600px) {
+  :root {
+    --phone-nav-height: 72px;
+    --phone-player-height: 74px;
+  }
+
+  body {
+    padding-bottom: calc(var(--phone-nav-height) + var(--phone-player-height) + env(safe-area-inset-bottom));
+  }
+
+  #mobile-top-nav {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: calc(var(--phone-nav-height) + env(safe-area-inset-bottom)) !important;
+    padding: 6px 10px env(safe-area-inset-bottom) !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    background: rgba(20, 19, 20, .96) !important;
+    border-top: 1px solid rgba(255,255,255,.08) !important;
+    border-bottom: 0 !important;
+    z-index: 1200 !important;
+  }
+
+  #mobile-top-nav .mobile-nav {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    gap: 4px !important;
+    overflow: visible !important;
+  }
+
+  #mobile-top-nav .mobile-nav-btn {
+    min-width: 0 !important;
+    min-height: 56px !important;
+    flex: 1 1 0 !important;
+    padding: 5px 4px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    color: var(--text-muted) !important;
+    background: transparent !important;
+    border-radius: 10px !important;
+    font-size: 0 !important;
+  }
+
+  #mobile-top-nav .mobile-nav-btn.active {
+    color: #fff !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #mobile-top-nav .mobile-nav-btn .material-symbols-outlined {
+    font-size: 30px !important;
+    line-height: 1 !important;
+  }
+
+  #mobile-top-nav .mobile-nav-text { display: none !important; }
+
+  footer.player-bar {
+    bottom: calc(var(--phone-nav-height) + env(safe-area-inset-bottom)) !important;
+    height: var(--phone-player-height) !important;
+    min-height: var(--phone-player-height) !important;
+    padding: 7px 12px 0 !important;
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) auto !important;
+    grid-template-rows: 1fr 4px !important;
+    column-gap: 10px !important;
+    row-gap: 0 !important;
+    border-radius: 0 !important;
+    border-top: 1px solid rgba(255,255,255,.1) !important;
+    background: rgba(27, 26, 28, .98) !important;
+  }
+
+  footer.player-bar .player-song-info {
+    grid-column: 1 / 3 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+
+  footer.player-bar .player-cover {
+    width: 42px !important;
+    height: 42px !important;
+    margin-right: 8px !important;
+    border-radius: 6px !important;
+  }
+
+  footer.player-bar .player-text { display: block !important; min-width: 0 !important; }
+  footer.player-bar .player-title,
+  footer.player-bar .player-artist {
+    max-width: 40vw !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  footer.player-bar .player-title { font-size: 12px !important; }
+  footer.player-bar .player-artist { font-size: 11px !important; }
+
+  footer.player-bar .player-controls {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    display: block !important;
+  }
+
+  footer.player-bar .control-buttons { gap: 0 !important; justify-content: flex-end !important; }
+  footer.player-bar .control-buttons .control-btn:not(.btn-play) { display: none !important; }
+
+  footer.player-bar .control-btn.btn-play {
+    display: inline-flex !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    background: #fff !important;
+    color: #111 !important;
+  }
+  footer.player-bar .control-btn.btn-play .material-symbols-outlined { font-size: 23px !important; }
+
+  /* Full-width progress line, ending before the play button column. */
+  footer.player-bar .progress-container {
+    display: block !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    width: calc(100% - 48px) !important;
+    max-width: none !important;
+    height: 4px !important;
+    margin-left: -12px !important;
+  }
+  footer.player-bar .progress-container .time-label { display: none !important; }
+  footer.player-bar .progress-container .slider {
+    display: block !important;
+    width: 100% !important;
+    height: 2px !important;
+    background: rgba(255,255,255,.22) !important;
+    border-radius: 0 !important;
+    transform: none !important;
+  }
+  footer.player-bar .progress-container .slider::-webkit-slider-runnable-track {
+    height: 2px !important;
+    border-radius: 0 !important;
+  }
+  footer.player-bar .progress-container .slider::-webkit-slider-thumb {
+    width: 8px !important;
+    height: 8px !important;
+    margin-top: -3px !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+  }
+  footer.player-bar .progress-container .slider::-moz-range-track {
+    height: 2px !important;
+    border-radius: 0 !important;
+    background: rgba(255,255,255,.22) !important;
+  }
+  footer.player-bar .progress-container .slider::-moz-range-progress {
+    height: 2px !important;
+    background: #fff !important;
+  }
+  footer.player-bar .progress-container .slider::-moz-range-thumb {
+    width: 8px !important;
+    height: 8px !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+  }
+
+  footer.player-bar .player-actions { display: none !important; }
+  main { padding-top: 72px !important; padding-bottom: 12px !important; }
+}
+
+@media (min-width: 601px) {
+  #mobile-top-nav { display: none !important; }
+}

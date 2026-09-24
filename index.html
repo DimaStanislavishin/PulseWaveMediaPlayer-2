@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="uk">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Pulse Wave</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0..1&display=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="index.css" />
+
+<script src="player.js" defer></script>
+<script src="lyrics.js" defer></script>
+<script src="index.js" defer></script>
+<script src="playlist-ui.js" defer></script>
+
+</head>
+
+<body>
+<!-- ==========================================================================
+6. HTML СТРУКТУРА ДОДАТКУ
+========================================================================== -->
+
+<aside>
+    <div class="brand">
+        <span class="material-symbols-outlined">waves</span>
+        Pulse Wave
+    </div>
+    <nav>
+        <a href="#" class="nav-btn active" onclick="navigateTo('home', event)">
+            <span class="material-symbols-outlined">home</span>
+            Головна
+        </a>
+        <a href="#" class="nav-btn" onclick="navigateTo('search', event)">
+            <span class="material-symbols-outlined">search</span>
+            Пошук
+        </a>
+        <a href="#" class="nav-btn" onclick="navigateTo('library', event)">
+            <span class="material-symbols-outlined">library_music</span>
+            Бібліотека
+        </a>
+    </nav>
+</aside>
+
+
+    <!-- ГОЛОВНИЙ ВМІСТ -->
+    <main>
+
+        <!-- ==================== СТОРІНКА: ГОЛОВНА ==================== -->
+        <div class="view active" id="view-home">
+            <!-- Великий банер релізу -->
+            <div class="hero-banner">
+                <div class="hero-content">
+                    <span class="hero-tag">НОВИЙ РЕЛІЗ</span>
+                    <h1 class="hero-title">Neon Pulse</h1>
+                    <p class="hero-desc">Відчуйте новий вимір електронної музики. Альбом "Hyperion Dreams" вже доступний у високій як[...]</p>
+                    <button class="btn-play-hero" onclick="playSong('Neon Pulse')">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                        Слухати зараз
+                    </button>
+                </div>
+                <img class="hero-img" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80" alt="[Обкладинка альбому Neon Pulse]"/>
+            </div>
+
+            <!-- Сітка рекомендованих карток -->
+            <h2 class="section-title">Рекомендовано для вас</h2>
+                <!-- Контейнер для списку треків, заповнюється JS -->
+                <ul id="tracks-list" class="song-list"></ul>
+                <button class="btn-play-hero" id="load-more-tracks">Показати більше</button>
+            <div class="grid-layout">
+                <!-- Картка 1 -->
+                <div class="card" onclick="playSong('Electric Moonlight')">
+                    <div class="card-img-wrapper">
+                        <img class="card-img" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&q=80" alt="[Електричне сяйво]"/>
+                        <button class="card-play-btn"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span></button>
+                    </div>
+                    <div class="card-title">Electric Moonlight</div>
+                    <div class="card-subtitle">Neon Horizon</div>
+                </div>
+
+                <!-- Картка 2 -->
+                <div class="card" onclick="playSong('Midnight Lofi')">
+                    <div class="card-img-wrapper">
+                        <img class="card-img" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&q=80" alt="[Нічний лоуфай]"/>
+                        <button class="card-play-btn"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span></button>
+                    </div>
+                    <div class="card-title">Midnight Lofi</div>
+                    <div class="card-subtitle">Chill Beats</div>
+                </div>
+
+                <!-- Картка 3 -->
+                <div class="card" onclick="playSong('Starlight Orbit')">
+                    <div class="card-img-wrapper">
+                        <img class="card-img" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&q=80" alt="[Орбіта зоряного світла]"/>
+                        <button class="card-play-btn"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span></button>
+                    </div>
+                    <div class="card-title">Starlight Orbit</div>
+                    <div class="card-subtitle">Cosmic Voyager</div>
+                </div>
+
+                <!-- Картка 4 -->
+                <div class="card" onclick="playSong('Digital Soul')">
+                    <div class="card-img-wrapper">
+                        <img class="card-img" src="https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=300&q=80" alt="[Цифрова душа]"/>
+                        <button class="card-play-btn"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span></button>
+                    </div>
+                    <div class="card-title">Digital Soul</div>
+                    <div class="card-subtitle">Chrome Static</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== СТОРІНКА: ПОШУК ==================== -->
+        <div class="view" id="view-search">
+            <h2 class="section-title">Пошук музики</h2>
+            
+            <!-- Пошуковий інпут -->
+            <div class="search-container">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" id="search-input" placeholder="Пісні, виконавці чи жанри..." />
+            </div>
+
+            <!-- Результати пошуку пісень -->
+            <div id="search-results-container" style="display: none; margin-top: 24px;">
+                <h3 id="search-results-title" style="margin-bottom: 16px; font-size: 18px; font-weight: 600;">Знайдені пісні</h3>
+                <div class="song-list" id="search-songs-list">
+                    <!-- Заповнюється через JS -->
+                </div>
+            </div>
+
+            <!-- Жанри для фільтрації -->
+            <div id="genres-section">
+                <h3 style="margin-bottom: 16px; font-size: 18px; font-weight: 600;">Популярні жанри</h3>
+                <div class="grid-layout" id="search-grid">
+                    <div class="card genre-card" style="background: linear-gradient(135deg, #e02c5c, #f77737);" onclick="quickSearch('Поп')">
+                        <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 30px;">🎤 Поп</h3>
+                        <p style="font-size: 12px; opacity: 0.8;">Найпопулярніші хіти</p>
+                    </div>
+                    <div class="card genre-card" style="background: linear-gradient(135deg, #1b8a5a, #0bb8cf);" onclick="quickSearch('Рок')">
+                        <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 30px;">🎸 Рок</h3>
+                        <p style="font-size: 12px; opacity: 0.8;">Класичні рок-хіти</p>
+                    </div>
+                    <div class="card genre-card" style="background: linear-gradient(135deg, #8c2cf5, #ff2a85);" onclick="quickSearch('Електроніка')">
+                        <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 30px;">⚡ Електроніка</h3>
+                        <p style="font-size: 12px; opacity: 0.8;">Новітня електронна музика</p>
+                    </div>
+                    <div class="card genre-card" style="background: linear-gradient(135deg, #1f45fc, #00ced1);" onclick="quickSearch('Лоу-фай')">
+                        <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 30px;">🎧 Лоу-фай</h3>
+                        <p style="font-size: 12px; opacity: 0.8;">Релаксуюча атмосфера</p>
+                    </div>
+                </div>
+
+                <!-- Тренди -->
+                <div id="trends-section" style="margin-top: 48px;">
+                    <h3 style="margin-bottom: 16px; font-size: 18px; font-weight: 600;">Тренди зараз</h3>
+                    <div class="song-list">
+                        <div class="song-row" onclick="playSong('Electric Moonlight')">
+                            <div class="song-num" style="color: var(--primary-color); font-weight: 700;">1</div>
+                            <img class="song-cover" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&q=80" alt="cover"/>
+                            <div class="song-info">
+                                <div class="song-title">Electric Moonlight</div>
+                                <div class="song-artist">Neon Horizon</div>
+                            </div>
+                            <div class="song-album">After Dark</div>
+                            <div class="song-duration">3:45</div>
+                            <button class="song-action-btn" onclick="toggleFavorite(event, this)">
+                                <span class="material-symbols-outlined">favorite</span>
+                            </button>
+                        </div>
+
+                        <div class="song-row" onclick="playSong('Digital Soul')">
+                            <div class="song-num" style="color: var(--primary-color); font-weight: 700;">2</div>
+                            <img class="song-cover" src="https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=300&q=80" alt="cover"/>
+                            <div class="song-info">
+                                <div class="song-title">Digital Soul</div>
+                                <div class="song-artist">Chrome Static</div>
+                            </div>
+                            <div class="song-album">The Grid</div>
+                            <div class="song-duration">4:12</div>
+                            <button class="song-action-btn" onclick="toggleFavorite(event, this)">
+                                <span class="material-symbols-outlined">favorite</span>
+                            </button>
+                        </div>
+
+                        <div class="song-row" onclick="playSong('Rainy Rooftops')">
+                            <div class="song-num" style="color: var(--primary-color); font-weight: 700;">3</div>
+                            <img class="song-cover" src="https://images.unsplash.com/photo-1515462277126-270d878326e5?w=300&q=80" alt="cover"/>
+                            <div class="song-info">
+                                <div class="song-title">Rainy Rooftops</div>
+                                <div class="song-artist">Lo-fi Echo</div>
+                            </div>
+                            <div class="song-album">Cozy Vibes</div>
+                            <div class="song-duration">2:58</div>
+                            <button class="song-action-btn" onclick="toggleFavorite(event, this)">
+                                <span class="material-symbols-outlined">favorite</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== СТОРІНКА: БІБЛІОТЕКА ==================== -->
+        <div class="view" id="view-library">
+            <h2 class="section-title">Ваша медіатека</h2>
+
+            <!-- Вкладки керування бібліотекою -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchLibraryTab('all', this)">Всі треки</button>
+                <button class="tab-btn" onclick="switchLibraryTab('favorites', this)">Улюблені</button>
+            </div>
+
+            <!-- Плейлисти в бібліотеці -->
+            <div class="grid-layout" id="library-playlists">
+                <div class="card" onclick="switchLibraryTab('favorites', this)">
+                    <div class="card-img-wrapper" style="background: linear-gradient(135deg, var(--primary-color), #201f20); display:flex; align-items:center; justify-content:center;">
+                        <span class="material-symbols-outlined" style="font-size: 64px; color: #fff; font-variation-settings: 'FILL' 1;">favorite</span>
+                    </div>
+                    <div class="card-title">Улюблені пісні</div>
+                    <div class="card-subtitle">Ваш персональний список</div>
+                </div>
+                <div class="card" onclick="switchLibraryTab('all', this)">
+                    <div class="card-img-wrapper" style="background: linear-gradient(135deg, #4ecdc4, #44a08d); display:flex; align-items:center; justify-content:center;">
+                        <span class="material-symbols-outlined" style="font-size: 64px; color: #fff; font-variation-settings: 'FILL' 1;">music_note</span>
+                    </div>
+                    <div class="card-title">Всі завантажені</div>
+                    <div class="card-subtitle">6 пісні</div>
+                </div>
+            </div>
+
+            <!-- Список пісень -->
+            <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 18px; font-weight: 600;">Недавно додані</h3>
+            <div class="song-list" id="library-songs-list">
+                <!-- Заповнюється через JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ==================== СИСТЕМНИЙ ФУТЕР: ПЛЕЄР ==================== -->
+    <footer class="player-bar">
+        <!-- Поточний трек -->
+        <div class="player-song-info">
+            <img class="player-cover" id="current-cover" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80" alt="[Зараз грає]"/>
+            <div class="player-text">
+                <div class="player-title" id="current-title">Neon Pulse</div>
+                <div class="player-artist" id="current-artist">Hyperion Dreams</div>
+            </div>
+        </div>
+
+        <!-- Кнопки керування -->
+        <div class="player-controls">
+            <div class="control-buttons">
+                <button class="control-btn" onclick="toggleShuffle()"><span class="material-symbols-outlined" id="shuffle-icon">shuffle</span></button>
+                <button class="control-btn" onclick="playPrevious()"><span class="material-symbols-outlined">skip_previous</span></button>
+                <button class="control-btn btn-play" id="play-btn" onclick="togglePlay()">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                </button>
+                <button class="control-btn" onclick="playNext()"><span class="material-symbols-outlined">skip_next</span></button>
+                <button class="control-btn" onclick="toggleRepeat()"><span class="material-symbols-outlined" id="repeat-icon">repeat</span></button>
+            </div>
+            
+            <!-- Повзунок часу -->
+            <div class="progress-container">
+                <span class="time-label" id="current-time">0:00</span>
+                <input class="slider" id="progress-bar" type="range" min="0" max="100" value="0" oninput="seekTrack(this.value)"/>
+                <span class="time-label" id="total-time">3:12</span>
+            </div>
+        </div>
+        
+        <!-- Додаткові дії (Гучність) -->
+        <div class="player-actions">
+            <button class="control-btn" id="lyrics-btn" onclick="toggleLyrics()" title="Текст пісні" aria-label="Текст пісні" aria-expanded="false" aria-controls="lyrics-overlay"><span class="material-symbols-outlined">lyrics</span></button>
+            <button class="control-btn"><span class="material-symbols-outlined">queue_music</span></button>
+            <div class="volume-controls">
+                <span class="material-symbols-outlined" style="font-size: 20px;">volume_up</span>
+                <input class="slider" type="range" min="0" max="100" value="75" oninput="changeVolume(this.value)"/>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== ВІКНО ТЕКСТУ ПІСНІ ==================== -->
+    <div class="lyrics-overlay" id="lyrics-overlay" aria-hidden="true">
+        <div class="lyrics-window" role="dialog" aria-labelledby="lyrics-title">
+            <div class="lyrics-header">
+                <img class="lyrics-cover" id="lyrics-cover" src="" alt="" hidden/>
+                <div class="lyrics-meta">
+                    <div class="lyrics-title" id="lyrics-title">Текст пісні</div>
+                    <div class="lyrics-artist" id="lyrics-artist"></div>
+                </div>
+                <span class="lyrics-badge" id="lyrics-badge" hidden></span>
+                <button class="lyrics-close" id="lyrics-close" type="button" title="Закрити" aria-label="Закрити">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <!-- Сюди JS додає рядки тексту -->
+            <div class="lyrics-body" id="lyrics-body"></div>
+
+            <div class="lyrics-footer">
+                <span id="lyrics-hint"></span>
+                <span>Тексти надає <a href="https://lrclib.net" target="_blank" rel="noopener noreferrer">LRCLIB</a></span>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio" preload="metadata"></audio>
+
+
+<!-- ==================== MOBILE TOP NAV (appended) ==================== -->
+
+<div id="mobile-top-nav" class="mobile-top-nav" aria-hidden="true">
+  <nav class="mobile-nav" role="navigation" aria-label="Mobile main navigation">
+    <button class="mobile-nav-btn" data-target="home" aria-label="Головна"><span class="material-symbols-outlined">home</span><span class="mobile-nav-text">Головна</span></button>
+    <button class="mobile-nav-btn" data-target="search" aria-label="Пошук"><span class="material-symbols-outlined">search</span><span class="mobile-nav-text">Пошук</span></button>
+    <button class="mobile-nav-btn" data-target="library" aria-label="Бібліотека"><span class="material-symbols-outlined">library_music</span><span class="mobile-nav-text">Бібліотека</span></button>
+  </nav>
+</div>
+
+<style>
+/* Mobile top nav styles (appended only) */
+#mobile-top-nav { display: none; position: fixed; top: 0; left: var(--sidebar-width); right: 0; height: 56px; background: var(--surface-color); border-bottom: 1px solid rgba(255,255,255,0.03); z-index: 950; display: flex; align-items: center; padding: 6px 8px; }
+.mobile-nav { display: flex; gap: 8px; width: 100%; justify-content: flex-start; overflow: hidden; }
+.mobile-nav-btn { background: none; border: none; color: var(--text-muted); display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; white-space: nowrap; max-width: 120px; text-overflow: ellipsis; overflow: hidden; }
+.mobile-nav-btn .material-symbols-outlined { font-size: 20px; }
+.mobile-nav-btn.active { color: #fff; background: linear-gradient(90deg, var(--primary-color), #854dff); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.mobile-nav-text { display: inline-block; max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* When extremely narrow, hide text to avoid overflow */
+@media (max-width: 420px) {
+  .mobile-nav-text { display: none; }
+  .mobile-nav-btn { padding: 8px; }
+}
+
+/* Show mobile nav only on small screens and keep layout spacing */
+@media (max-width: 600px) {
+  #mobile-top-nav { left: var(--sidebar-width); display: flex; }
+  main { padding-top: 64px; }
+}
+
+/* If sidebar is collapsed (very small), align top nav to left 0 */
+@media (max-width: 360px) {
+  :root { --sidebar-width: 64px; }
+  #mobile-top-nav { left: var(--sidebar-width); }
+}
+</style>
+
+<script>
+// Mobile top nav behavior (appended only)
+(function(){
+  function updateMobileNavVisibility() {
+    const nav = document.getElementById('mobile-top-nav');
+    if (!nav) return;
+    if (window.innerWidth <= 600) {
+      nav.style.display = 'flex';
+      nav.setAttribute('aria-hidden', 'false');
+    } else {
+      nav.style.display = 'none';
+      nav.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function syncActiveState() {
+    const asideActive = document.querySelector('aside nav .nav-btn.active');
+    const activeTarget = asideActive ? (asideActive.getAttribute('onclick') || '').match(/'([^']+)'/) : null;
+    const targetName = activeTarget ? activeTarget[1] : null;
+    document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.target === targetName);
+    });
+  }
+
+  function attachHandlers() {
+    document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+      btn.addEventListener('click', function(event){
+        const t = btn.dataset.target;
+        // call existing navigateTo if available
+        if (typeof navigateTo === 'function') {
+          navigateTo(t, event);
+        }
+        // mark active on mobile and aside
+        document.querySelectorAll('.mobile-nav-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        // sync aside nav buttons
+        document.querySelectorAll('aside nav .nav-btn').forEach(nb=>{
+          nb.classList.toggle('active', (nb.getAttribute('onclick') || '').includes("'"+t+"'"));
+        });
+      });
+    });
+  }
+
+  window.addEventListener('resize', function(){ updateMobileNavVisibility(); syncActiveState(); });
+  document.addEventListener('DOMContentLoaded', function(){ updateMobileNavVisibility(); attachHandlers(); syncActiveState(); });
+})();
+</script>
+
+<script>
+/*
+  Move/clone sidebar nav items into #mobile-top-nav on small screens,
+  and remove them when screen becomes wide again.
+  This keeps your original aside nav intact (we clone it).
+*/
+(function(){
+  const MOBILE_MAX = 1000;
+  function ensureMobileContainer(){
+    let mobile = document.getElementById('mobile-top-nav');
+    if (!mobile) {
+      mobile = document.createElement('div');
+      mobile.id = 'mobile-top-nav';
+      mobile.innerHTML = '<nav class=\"mobile-nav\" role=\"navigation\" aria-label=\"Mobile main navigation\"></nav>';
+      document.body.appendChild(mobile);
+    }
+    return mobile.querySelector('.mobile-nav');
+  }
+
+  function buildMobileNav() {
+    const mobileNav = ensureMobileContainer();
+    const asideNav = document.querySelector('aside nav');
+    if (!asideNav || !mobileNav) return;
+    // Clear current mobile nav items
+    mobileNav.innerHTML = '';
+    asideNav.querySelectorAll('.nav-btn').forEach(btn => {
+      // extract target from onclick (navigateTo('name', event))
+      const onclick = btn.getAttribute('onclick') || '';
+      const match = onclick.match(/'([^']+)'/);
+      const target = match ? match[1] : '';
+
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'mobile-nav-btn';
+      b.dataset.target = target;
+      b.setAttribute('aria-label', btn.textContent.trim());
+
+      // clone icon if present
+      const icon = btn.querySelector('.material-symbols-outlined');
+      if (icon) {
+        b.appendChild(icon.cloneNode(true));
+      }
+
+      const span = document.createElement('span');
+      span.className = 'mobile-nav-text';
+      span.textContent = btn.textContent.trim();
+      b.appendChild(span);
+
+      b.addEventListener('click', function(e){
+        // call existing navigateTo if available, otherwise simulate click on aside nav btn
+        if (typeof navigateTo === 'function' && target) {
+          navigateTo(target, e);
+        } else {
+          // fallback: try to find and trigger the aside nav button
+          const targetBtn = Array.from(document.querySelectorAll('aside nav .nav-btn')).find(n => (n.getAttribute('onclick')||'').includes("'" + target + "'"));
+          if (targetBtn) targetBtn.click();
+        }
+        // set active class visually
+        document.querySelectorAll('.mobile-nav-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+
+        // keep aside nav active state in sync (if aside exists)
+        document.querySelectorAll('aside nav .nav-btn').forEach(n => {
+          const isActive = (n.getAttribute('onclick')||'').includes("'" + target + "'");
+          n.classList.toggle('active', isActive);
+        });
+      });
+
+      mobileNav.appendChild(b);
+    });
+  }
+
+  function checkResize() {
+    const mobileNav = ensureMobileContainer();
+    if (window.innerWidth <= MOBILE_MAX) {
+      mobileNav.parentElement.style.display = 'flex';
+      buildMobileNav();
+    } else {
+      // hide mobile nav on wide screens
+      if (mobileNav && mobileNav.parentElement) mobileNav.parentElement.style.display = 'none';
+      // clear mobile nav entries to avoid duplication when resizing repeatedly
+      if (mobileNav) mobileNav.innerHTML = '';
+    }
+  }
+
+  window.addEventListener('resize', checkResize);
+  document.addEventListener('DOMContentLoaded', checkResize);
+})();
+</script>
+
+<script>
+(function(){
+  const AUDIO_ID = 'audio';
+  let popup = null;
+
+  function createPopup() {
+    popup = document.createElement('div');
+    popup.className = 'volume-popup';
+    popup.innerHTML = '<input class="volume-vertical" type="range" min="0" max="100" step="1" />';
+    document.body.appendChild(popup);
+
+    // stop clicks from closing immediately
+    popup.addEventListener('click', e => e.stopPropagation());
+    // close on Escape
+    document.addEventListener('keydown', onKeyDown);
+    window.addEventListener('resize', removePopup);
+
+    const slider = popup.querySelector('.volume-vertical');
+    slider.addEventListener('input', onSliderInput);
+    slider.addEventListener('touchstart', e => e.stopPropagation(), {passive:true});
+  }
+
+  function onKeyDown(e){
+    if (e.key === 'Escape') removePopup();
+  }
+
+  function removePopup(){
+    if (!popup) return;
+    const slider = popup.querySelector('.volume-vertical');
+    if (slider) slider.removeEventListener('input', onSliderInput);
+    document.removeEventListener('keydown', onKeyDown);
+    window.removeEventListener('resize', removePopup);
+    popup.remove();
+    popup = null;
+  }
+
+  function onSliderInput(e) {
+    const raw = Number(e.target.value); // this is rotated value
+    // because we rotated the input, we invert so that moving UP increases volume
+    const computed = Math.max(0, Math.min(100, 100 - raw));
+    const audio = document.getElementById(AUDIO_ID);
+    if (audio) audio.volume = computed / 100;
+    // (keep visual position in sync if audio changed elsewhere)
+  }
+
+  function togglePopupForButton(btn) {
+    if (popup) {
+      removePopup();
+      return;
+    }
+    createPopup();
+    positionPopupNearButton(btn);
+    // initialize slider value from audio.volume
+    const audio = document.getElementById(AUDIO_ID);
+    const slider = popup.querySelector('.volume-vertical');
+    const audioVol = audio ? Math.round((audio.volume || 0.75) * 100) : 75;
+    // because slider is rotated and we invert, set slider.value = 100 - audioVol
+    slider.value = (100 - audioVol).toString();
+  }
+
+  function positionPopupNearButton(btn) {
+    if (!popup || !btn) return;
+    const rect = btn.getBoundingClientRect();
+    const popupW = popup.offsetWidth;
+    const popupH = popup.offsetHeight;
+    // prefer showing above button; if not enough space, show below
+    const margin = 8;
+    let top = rect.top - popupH - margin;
+    if (top < 8) {
+      // not enough space above — show below
+      top = rect.bottom + margin;
+    }
+    let left = rect.left + (rect.width / 2) - (popupW / 2);
+    // clamp to viewport
+    left = Math.max(8, Math.min(left, window.innerWidth - popupW - 8));
+    popup.style.top = Math.round(top) + 'px';
+    popup.style.left = Math.round(left) + 'px';
+  }
+
+  // attach toggle to your volume button(s)
+  function attachHandler() {
+    // try find volume button (looks for material icon 'volume_up' or any .control-btn that contains that)
+    const candidates = Array.from(document.querySelectorAll('.player-actions .control-btn, .player-actions button'));
+    let volBtn = null;
+    for (const c of candidates) {
+      const icon = c.querySelector('.material-symbols-outlined');
+      if (icon && /volume_up|volume_down|volume_mute/.test(icon.textContent.trim())) {
+        volBtn = c;
+        break;
+      }
+      // or check title/aria-label
+      if ((c.getAttribute('aria-label')||'').toLowerCase().includes('volume')) {
+        volBtn = c;
+        break;
+      }
+    }
+
+    // Запасний варіант (перша кнопка в .player-actions) прибрано: тепер це кнопка тексту пісні,
+    // і вона не має відкривати вікно гучності.
+    if (!volBtn) return;
+
+    volBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      togglePopupForButton(volBtn);
+    });
+
+    // close popup when clicking outside
+    document.addEventListener('click', function(){
+      if (popup) removePopup();
+    });
+
+    // recompute position on scroll (so popup stays near button)
+    window.addEventListener('scroll', function(){
+      if (popup) {
+        // find button bounding again and reposition
+        positionPopupNearButton(volBtn);
+      }
+    }, {passive:true});
+  }
+
+  document.addEventListener('DOMContentLoaded', attachHandler);
+  // also try again shortly because some UI might render later
+  setTimeout(attachHandler, 700);
+})();
+</script>
+
+</body>
+
+</html>
+
+<!-- appended small script to expand mobile top nav behavior to tablets -->
+<script>
+(function(){
+  const nav = document.getElementById('mobile-top-nav');
+  function showIfNeeded(){
+    if(!nav) return;
+    if(window.innerWidth <= 1000){
+      nav.style.display = 'flex';
+      nav.setAttribute('aria-hidden','false');
+      const main = document.querySelector('main');
+      if(main) main.style.paddingTop = '72px';
+    } else {
+      nav.style.display = 'none';
+      nav.setAttribute('aria-hidden','true');
+      const main = document.querySelector('main');
+      if(main) main.style.paddingTop = '';
+    }
+  }
+  window.addEventListener('resize', showIfNeeded);
+  document.addEventListener('DOMContentLoaded', showIfNeeded);
+})();
+</script>
