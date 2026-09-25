@@ -29,7 +29,7 @@ function getPlayerCover(track) {
 }
 function getPlayerArtist(track) {
     if (track.user && track.user.name) return track.user.name;
-    return track.artist || 'Невідомий';
+    return track.artist || 'Unknown';
 }
 function getTrackStreamUrl(track) {
     if (!track) return '';
@@ -127,7 +127,7 @@ function updateRangeVisual(range, value, color) {
     if (!range) return;
     const percentage = Math.max(0, Math.min(100, Number(value) || 0));
     range.value = percentage;
-    range.style.setProperty('background', 'linear-gradient(to right, ' + color + ' 0%, ' + color + ' ' + percentage + '%, rgba(255,255,255,0.22) ' + percentage + '%, rgba(255,255,255,0.22) 100%)', 'important');
+    range.style.setProperty('background', 'linear-gradient(to right, ' + color + ' 0%, ' + color + ' ' + percentage + '%, rgba(255,255,255,0.22) ' + percentage + '%, rgba(255,255,255,0.22) 100%)');
 }
 function updateProgressVisual(value) { updateRangeVisual(progressBar, value, 'var(--primary-light)'); }
 function updateVolumeVisual(value) { updateRangeVisual(volumeBar, value, 'var(--primary-light)'); }

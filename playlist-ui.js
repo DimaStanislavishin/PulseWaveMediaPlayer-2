@@ -74,8 +74,8 @@
             button.type = 'button';
             button.className = 'song-action-btn playlist-action-btn';
             button.dataset.playlistAction = 'true';
-            button.title = 'Добавить в плейлист';
-            button.setAttribute('aria-label', 'Добавить в плейлист');
+            button.title = 'Add to playlist';
+            button.setAttribute('aria-label', 'Add to playlist');
             button.innerHTML = '<span class="material-symbols-outlined">queue_music</span>';
             button.addEventListener('click', function (event) {
                 event.preventDefault();
@@ -90,23 +90,23 @@
         var data = getPlaylists();
         if (!data[playlistName]) data[playlistName] = [];
         if (data[playlistName].some(function (track) { return sameTrack(track, activeTrack); })) {
-            notify('Трек уже есть в плейлисте «' + playlistName + '»');
+            notify('This track is already in the playlist \"' + playlistName + '\"');
             closePicker();
             return;
         }
         data[playlistName].push(activeTrack);
         write(STORAGE_KEY, data);
         renderCards();
-        notify('Трек «' + (activeTrack.title || 'Без названия') + '» добавлен в плейлист');
+        notify('Track \"' + (activeTrack.title || 'Untitled') + '\" added to the playlist');
         closePicker();
     }
 
     function createPlaylist() {
         var data = getPlaylists();
-        var name = window.prompt('Название плейлиста:', activeTrack && activeTrack.title || 'Новый плейлист');
+        var name = window.prompt('Playlist name:', activeTrack && activeTrack.title || 'New playlist');
         if (!name || !name.trim()) return;
         name = name.trim();
-        if (data[name]) { notify('Плейлист с таким названием уже существует'); return; }
+        if (data[name]) { notify('A playlist with this name already exists'); return; }
         data[name] = activeTrack ? [activeTrack] : [];
         write(STORAGE_KEY, data);
         renderCards();
@@ -119,9 +119,9 @@
         closePicker();
         picker = document.createElement('div');
         picker.className = 'playlist-picker-backdrop';
-        picker.innerHTML = '<section class="playlist-picker" role="dialog" aria-modal="true"><div class="playlist-picker-left"><input class="playlist-search" type="search" placeholder="Поиск плейлиста"><button class="playlist-create" type="button"><span class="material-symbols-outlined">add</span>Новый плейлист</button><div class="playlist-picker-list"></div></div><div class="playlist-picker-right"><button class="playlist-picker-close" type="button">×</button><h3>Добавить в плейлист</h3><p class="playlist-selected-track"></p><div class="playlist-choice-list"></div></div></section>';
+        picker.innerHTML = '<section class="playlist-picker" role="dialog" aria-modal="true"><div class="playlist-picker-left"><input class="playlist-search" type="search" placeholder="Search playlists..." /><div class="playlist-picker-list"></div></div><div class="playlist-picker-right"><div class="playlist-picker-header"><span>Selected track</span><button class="playlist-picker-close" type="button" aria-label="Close">×</button></div><div class="playlist-selected-track"></div><button class="playlist-create" type="button">Create new playlist</button><div class="playlist-choice-list"></div></div></section>';
         document.body.appendChild(picker);
-        picker.querySelector('.playlist-selected-track').textContent = activeTrack.title || 'Без названия';
+        picker.querySelector('.playlist-selected-track').textContent = activeTrack.title || 'Untitled';
         picker.querySelector('.playlist-picker-close').addEventListener('click', closePicker);
         picker.addEventListener('click', function (event) { if (event.target === picker) closePicker(); });
         picker.querySelector('.playlist-create').addEventListener('click', createPlaylist);
@@ -138,7 +138,7 @@
                     button.className = 'playlist-choice';
                     button.innerHTML = '<span class="material-symbols-outlined">queue_music</span><span><b></b><small></small></span>';
                     button.querySelector('b').textContent = name;
-                    button.querySelector('small').textContent = data[name].length + ' трек(ов)';
+                    button.querySelector('small').textContent = data[name].length + ' track(s)';
                     button.addEventListener('click', function () { saveTrack(name); });
                     list.appendChild(button);
                 });
@@ -155,15 +155,52 @@
         var view = document.getElementById('playlist-detail-view') || document.createElement('div');
         view.id = 'playlist-detail-view';
         view.className = 'playlist-detail-view';
-        view.innerHTML = '<div class="playlist-detail-header"><button class="playlist-back" type="button">← Бібліотека</button><button class="playlist-detail-more" type="button"><span class="material-symbols-outlined">more_horiz</span></button></div><div class="playlist-detail-cover-wrap"><img class="playlist-detail-cover" alt=""></div><div class="playlist-detail-copy"><h1></h1><p class="playlist-detail-meta"></p></div><div class="playlist-detail-actions"><button class="playlist-add-track" type="button">+ Додати трек</button></div><div class="playlist-detail-list"></div>';
+        view.innerHTML = '<div class="playlist-detail-header"><button class="playlist-back" type="button">← Library</button><button class="playlist-detail-more" type="button"><span class="material-symbols-outlined">delete</span></button></div><div class="playlist-detail-body"><img class="playlist-detail-cover"><div class="playlist-detail-info"><h1></h1><div class="playlist-detail-meta"></div><button class="playlist-add-track" type="button">Add track</button></div></div><div class="playlist-detail-list"></div>';
         if (!view.parentNode) document.body.appendChild(view);
         view.querySelector('.playlist-detail-cover').src = playlistCover(name, tracks);
         view.querySelector('h1').textContent = name;
-        view.querySelector('.playlist-detail-meta').textContent = tracks.length + ' трек(ів)';
+        view.querySelector('.playlist-detail-meta').textContent = tracks.length + ' track(s)';
         view.querySelector('.playlist-back').addEventListener('click', function () { view.remove(); });
-        view.querySelector('.playlist-add-track').addEventListener('click', function () { if (window.localTracks && window.localTracks[0]) openPicker(window.localTracks[0]); });
+        view.querySelector('.playlist-add-track').addEventListener('click', function () {
+    // Close the playlist details screen
+    view.remove();
+
+    // Navigate to the Home page
+    if (typeof window.navigateTo === 'function') {
+        window.navigateTo('home');
+    } else {
+        // Fallback navigation if navigateTo is unavailable
+        document.querySelectorAll('.view').forEach(function (page) {
+            page.classList.remove('active');
+        });
+
+        var homeView = document.getElementById('view-home');
+
+        if (homeView) {
+            homeView.classList.add('active');
+        }
+
+        document.querySelectorAll('aside nav .nav-btn').forEach(function (button) {
+            button.classList.remove('active');
+        });
+
+        var homeButton = document.querySelector(
+            'aside nav .nav-btn[onclick*="home"]'
+        );
+
+        if (homeButton) {
+            homeButton.classList.add('active');
+        }
+    }
+
+    // Scroll to the top of the Home page
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
         view.querySelector('.playlist-detail-more').addEventListener('click', function () {
-            if (window.confirm('Удалить плейлист «' + name + '»?')) { delete data[name]; write(STORAGE_KEY, data); view.remove(); renderCards(); }
+            if (window.confirm('Delete playlist \"' + name + '\"?')) { delete data[name]; write(STORAGE_KEY, data); view.remove(); renderCards(); }
         });
         var list = view.querySelector('.playlist-detail-list');
         tracks.forEach(function (track, index) {
@@ -171,7 +208,7 @@
             row.className = 'playlist-detail-row';
             row.innerHTML = '<span>' + (index + 1) + '</span><img><div><b></b><small></small></div><button class="playlist-remove-track" type="button">×</button>';
             row.querySelector('img').src = coverOf(track);
-            row.querySelector('b').textContent = track.title || 'Без названия';
+            row.querySelector('b').textContent = track.title || 'Untitled';
             row.querySelector('small').textContent = artistOf(track);
             row.addEventListener('click', function (event) { if (!event.target.closest('button') && window.playSong) { window.setTrackList(tracks, index); window.playSong(track); } });
             row.querySelector('button').addEventListener('click', function () { tracks.splice(index, 1); write(STORAGE_KEY, data); openPlaylist(name); renderCards(); });
@@ -191,18 +228,18 @@
             card.innerHTML = '<div class="card-img-wrapper"><img class="card-img"></div><div class="card-title"></div><div class="card-subtitle"></div>';
             card.querySelector('img').src = playlistCover(name, data[name]);
             card.querySelector('.card-title').textContent = name;
-            card.querySelector('.card-subtitle').textContent = data[name].length + ' трек(ів)';
+            card.querySelector('.card-subtitle').textContent = data[name].length + ' track(s)';
             card.addEventListener('click', function () { openPlaylist(name); });
             container.appendChild(card);
         });
     }
 
     var style = document.createElement('style');
-    style.textContent = '.playlist-action-btn{margin-left:8px}.playlist-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:3000;background:#191923;color:#fff;padding:12px 16px;border-radius:12px;opacity:0;transition:opacity .2s}.playlist-toast.visible{opacity:1}.playlist-picker-backdrop{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.62);display:flex;align-items:center;justify-content:center;padding:18px}.playlist-picker{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:760px;width:min(90vw,760px);background:#121215;border-radius:22px;padding:18px}.playlist-picker-left,.playlist-picker-right,.playlist-picker-list,.playlist-choice-list{display:flex;flex-direction:column;gap:10px}.playlist-picker-list,.playlist-choice-list{max-height:300px;overflow:auto}.playlist-choice{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;background:rgba(255,255,255,.05);border:0;color:#fff;text-align:left}.playlist-choice b,.playlist-choice small{display:block}.playlist-choice small{color:#aaa}.playlist-search{padding:12px;border-radius:12px;background:#222;color:#fff;border:1px solid #444}.playlist-create,.playlist-picker-close,.playlist-back,.playlist-add-track,.playlist-detail-more,.playlist-remove-track{padding:10px;border:0;border-radius:10px;background:rgba(255,255,255,.08);color:#fff}.playlist-picker-close{align-self:flex-end;font-size:22px}.playlist-detail-view{position:fixed;inset:0;z-index:1500;overflow:auto;background:rgba(11,11,16,.97);padding:24px 18px}.playlist-detail-header,.playlist-detail-copy,.playlist-detail-actions,.playlist-detail-list,.playlist-detail-cover-wrap{max-width:820px;margin-left:auto;margin-right:auto}.playlist-detail-header{display:flex;justify-content:space-between}.playlist-detail-cover{width:100%;max-height:260px;object-fit:cover;border-radius:20px;margin:18px 0}.playlist-detail-row{display:grid;grid-template-columns:42px 52px 1fr 42px;gap:12px;align-items:center;padding:12px;border-radius:14px;background:rgba(255,255,255,.05);margin-top:8px}.playlist-detail-row img{width:52px;height:52px;object-fit:cover;border-radius:10px}.playlist-detail-row b,.playlist-detail-row small{display:block}.playlist-detail-row small{color:#aaa}@media(max-width:720px){.playlist-picker{grid-template-columns:1fr}.playlist-detail-row{grid-template-columns:30px 42px 1fr 30px}}';
+    style.textContent = '.playlist-action-btn{margin-left:8px}.playlist-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:3000;background:#191923;color:#fff;padding:12px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s ease}.playlist-toast.visible{opacity:1}.playlist-picker-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:2500}.playlist-picker{width:min(680px,92vw);background:#1b1c23;border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:18px;display:grid;grid-template-columns:1.2fr 1fr;gap:16px;box-shadow:0 18px 50px rgba(0,0,0,.5)}.playlist-picker-left,.playlist-picker-right{display:flex;flex-direction:column;gap:12px}.playlist-search{background:#0f1016;border:1px solid rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:12px 14px;outline:none}.playlist-picker-list,.playlist-choice-list{display:flex;flex-direction:column;gap:8px;max-height:250px;overflow:auto}.playlist-choice{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);color:#fff;border-radius:12px;padding:10px 12px;text-align:left}.playlist-choice span:first-child{color:var(--primary-light)}.playlist-choice b,.playlist-picker-header span,.playlist-selected-track{display:block}.playlist-picker-header{display:flex;justify-content:space-between;align-items:center;color:#b7b3c5}.playlist-picker-close{background:none;border:none;color:#fff;font-size:26px;cursor:pointer}.playlist-selected-track{background:rgba(255,255,255,.03);border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,.06);font-weight:600}.playlist-create{background:linear-gradient(135deg,var(--primary-color),#854dff);border:none;color:#fff;padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer}.playlist-detail-view{position:fixed;inset:0;background:rgba(11,12,18,.96);z-index:2400;padding:24px;overflow:auto}.playlist-detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.playlist-back,.playlist-detail-more{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:10px 14px;cursor:pointer}.playlist-detail-body{display:flex;gap:20px;align-items:center;margin-bottom:20px}.playlist-detail-cover{width:180px;height:180px;object-fit:cover;border-radius:18px}.playlist-detail-info h1{margin:0 0 8px;font-size:2rem}.playlist-detail-meta{color:#b7b3c5;margin-bottom:12px}.playlist-add-track{background:linear-gradient(135deg,#ff6b9d,#ff8d5c);border:none;color:#fff;padding:10px 18px;border-radius:12px;font-weight:700;cursor:pointer}.playlist-detail-list{display:flex;flex-direction:column;gap:10px}.playlist-detail-row{display:grid;grid-template-columns:34px 52px 1fr 40px;align-items:center;gap:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:8px 12px}.playlist-detail-row img{width:52px;height:52px;object-fit:cover;border-radius:10px}.playlist-detail-row b{display:block}.playlist-detail-row small{color:#b7b3c5}.playlist-remove-track{background:none;border:none;color:#fff;font-size:22px;cursor:pointer}';
     document.head.appendChild(style);
 
     function initialize() {
-        if (!Object.keys(getPlaylists()).length) write(STORAGE_KEY, { 'Моя колекція': [] });
+        if (!Object.keys(getPlaylists()).length) write(STORAGE_KEY, { 'My collection': [] });
         renderCards();
         addButtonsToRows();
         var observer = new MutationObserver(function () { addButtonsToRows(); });

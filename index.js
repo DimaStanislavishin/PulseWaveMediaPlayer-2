@@ -18,12 +18,12 @@ let tracksOffset = 0;
 let tracksLimit = 20;
 
 const localTracks = [
-    { id: 1, title: 'Electric Moonlight', artist: 'Neon Horizon', album: 'After Dark', duration: '3:45', genre: 'Електроніка', cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&q=80', stream: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-    { id: 2, title: 'Digital Soul', artist: 'Chrome Static', album: 'The Grid', duration: '4:12', genre: 'Електроніка', cover: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=300&q=80', stream: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
-    { id: 3, title: 'Rainy Rooftops', artist: 'Lo-fi Echo', album: 'Cozy Vibes', duration: '2:58', genre: 'Лоу-фай', cover: 'https://images.unsplash.com/photo-1515462277126-270d878326e5?w=300&q=80', stream: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
-    { id: 4, title: 'Midnight Lofi', artist: 'Chill Beats', album: 'Night Sessions', duration: '3:22', genre: 'Лоу-фай', cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&q=80', stream: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
-    { id: 5, title: 'Starlight Orbit', artist: 'Cosmic Voyager', album: 'Deep Space', duration: '4:05', genre: 'Електроніка', cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&q=80', stream: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' },
-    { id: 6, title: 'Neon Pulse', artist: 'Hyperion Dreams', album: 'Hyperion Dreams', duration: '3:30', genre: 'Поп', cover: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80', stream: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3' }
+    { id: 1, title: 'Electric Moonlight', artist: 'Neon Horizon', album: 'After Dark', duration: '3:45', genre: 'Electronic', cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&q=80' },
+    { id: 2, title: 'Digital Soul', artist: 'Chrome Static', album: 'The Grid', duration: '4:12', genre: 'Electronic', cover: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=300&q=80' },
+    { id: 3, title: 'Rainy Rooftops', artist: 'Lo-fi Echo', album: 'Cozy Vibes', duration: '2:58', genre: 'Lo-fi', cover: 'https://images.unsplash.com/photo-1515462277126-270d878326e5?w=300&q=80' },
+    { id: 4, title: 'Midnight Lofi', artist: 'Chill Beats', album: 'Night Sessions', duration: '3:22', genre: 'Lo-fi', cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&q=80' },
+    { id: 5, title: 'Starlight Orbit', artist: 'Cosmic Voyager', album: 'Deep Space', duration: '4:05', genre: 'Electronic', cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&q=80' },
+    { id: 6, title: 'Neon Pulse', artist: 'Hyperion Dreams', album: 'Hyperion Dreams', duration: '3:30', genre: 'Pop', cover: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&q=80' }
 ];
 
 window.appName = appName;
@@ -70,7 +70,7 @@ function getArtistName(track) {
         return track.artist;
     }
 
-    return 'Невідомий';
+    return 'Unknown';
 }
 
 function getAlbumName(track) {
@@ -137,7 +137,7 @@ function createSongRow(track, number, list, index, action) {
     cover.alt = 'cover';
 
     info.className = 'song-info';
-    info.appendChild(createTextElement('div', 'song-title', track.title || 'Без назви'));
+    info.appendChild(createTextElement('div', 'song-title', track.title || 'Untitled'));
     info.appendChild(createTextElement('div', 'song-artist', getArtistName(track)));
 
     icon.className = 'material-symbols-outlined';
@@ -201,7 +201,7 @@ function updateHero(track) {
     }
 
     heroTitle.textContent = track.title || '';
-    heroDescription.textContent = 'Найактуальніший хіт від ' + getArtistName(track);
+    heroDescription.textContent = 'The latest hit from ' + getArtistName(track);
     heroBanner.style.backgroundImage = 'linear-gradient(rgba(27,12,43,0.6), rgba(27,12,43,0.95)), url(' + getCoverUrl(track) + ')';
 
     if (heroButton) {
@@ -260,7 +260,7 @@ async function loadMoreTracks() {
     }
 
     loadMoreButton.disabled = true;
-    loadMoreButton.textContent = 'Завантаження...';
+    loadMoreButton.textContent = 'Loading...';
 
     try {
         const url = apiHost + '/v1/tracks/trending?app_name=' + encodeURIComponent(appName) + '&limit=' + tracksLimit + '&offset=' + tracksOffset;
@@ -272,13 +272,13 @@ async function loadMoreTracks() {
             addTracks(tracks);
             tracksOffset = tracksOffset + tracks.length;
             loadMoreButton.disabled = false;
-            loadMoreButton.textContent = 'Показати більше';
+            loadMoreButton.textContent = 'Show more';
         } else {
             loadMoreButton.style.display = 'none';
         }
     } catch (error) {
         loadMoreButton.disabled = false;
-        loadMoreButton.textContent = 'Показати більше';
+        loadMoreButton.textContent = 'Show more';
     }
 }
 
@@ -339,7 +339,7 @@ async function performSearch() {
     }
 
     showSearchBlocks(true);
-    searchResultsBox.innerHTML = '<div style="padding: 20px; text-align: center; color: #cbc3da;">Пошук музики...</div>';
+    searchResultsBox.innerHTML = '<div style="padding: 20px; text-align: center; color: #cbc3da;">Searching for music...</div>';
 
     const localResults = searchLocalTracks(query);
     const apiResults = await searchApiTracks(query);
@@ -371,17 +371,17 @@ function showSearchResults(localResults, apiResults) {
     searchResultsBox.innerHTML = '';
 
     if (localResults.length === 0 && apiResults.length === 0) {
-        searchResultsBox.innerHTML = '<div style="padding: 20px; text-align: center; color: #dcbfc7;">Нічого не знайдено.</div>';
+        searchResultsBox.innerHTML = '<div style="padding: 20px; text-align: center; color: #dcbfc7;">Nothing found.</div>';
         return;
     }
 
     if (localResults.length > 0) {
-        addSearchTitle('У вашій бібліотеці');
+        addSearchTitle('In your library');
         addSearchList(localResults);
     }
 
     if (apiResults.length > 0) {
-        addSearchTitle('Результати з мережі');
+        addSearchTitle('Network results');
         addSearchList(apiResults);
     }
 }
@@ -424,7 +424,7 @@ function switchLibraryTab(tabName) {
     }
 
     if (tracks.length === 0) {
-        libraryList.innerHTML = '<p style="color: var(--text-muted); padding: 24px; text-align: center;">Тут порожньо</p>';
+        libraryList.innerHTML = '<p style="color: var(--text-muted); padding: 24px; text-align: center;">It\'s empty</p>';
         return;
     }
 
@@ -495,7 +495,7 @@ function toggleFavorite(event, button, track) {
 
     const activeTab = document.querySelector('.tab-btn.active');
 
-    if (activeTab && activeTab.textContent.trim() === 'Улюблені') {
+    if (activeTab && activeTab.textContent.trim() === 'Favorites') {
         switchLibraryTab('favorites');
     }
 }
